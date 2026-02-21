@@ -1,0 +1,137 @@
+<style>
+    /* --- CSS UPDATE: Navbar Logo --- */
+    .nav-left {
+        /* Keep existing font styles */
+        font-weight: 600;
+        font-size: 1.1rem;
+        letter-spacing: -0.02em;
+        /* Add flex for icon alignment */
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+    }
+    .nav-logo-icon {
+        height: 24px;
+        width: auto;
+        opacity: 0.85;
+        transition: opacity 0.3s ease;
+    }
+    /* Hover state on container triggers icon opacity */
+    .nav-left:hover .nav-logo-icon {
+        opacity: 1;
+    }
+
+    /* --- CSS UPDATE: Hero Background Logo --- */
+    .hero {
+        /* Ensure existing styles remain, verify position relative and overflow */
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 var(--grid-pad);
+        position: relative;
+        overflow: hidden; /* Added to contain bg logo */
+    }
+    /* Ensure content sits above bg logo */
+    .hero-inner {
+        max-width: 1400px;
+        width: 100%;
+        margin: 0 auto;
+        will-change: transform, opacity;
+        position: relative; /* Added z-index context */
+        z-index: 5; /* Higher than bg logo */
+    }
+    .hero-bg-logo-wrap {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70vw; /* Massive size behind text */
+        max-width: 1200px;
+        z-index: 1;
+        pointer-events: none;
+        mix-blend-mode: multiply;
+        filter: blur(3px);
+        opacity: 0; /* Set initial opacity for GSAP to handle */
+        will-change: transform, opacity;
+    }
+    .hero-bg-logo-wrap img {
+        width: 100%;
+        height: auto;
+        display: block;
+        /* Scale loop will apply here */
+    }
+</style>
+
+
+<nav>
+    <div class="nav-left">
+        <img src="https://cdn.prod.website-files.com/66a9f893853be9d0700394f6/66aa00e97b0260b5c219685f_LiBDR_black.svg" alt="LiBDR Logo Icon" class="nav-logo-icon">
+        LiBDR AI
+    </div>
+    <div class="nav-center">
+        <a href="#systems">EstateOS</a>
+        <a href="#systems">RecruitOS</a>
+        <a href="#systems">Web</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-right">
+        <div class="sys-status hide-mobile"><div class="dot pulse"></div> Systems Active</div>
+        <a href="#contact" class="btn green-btn">Book a Strategy Call</a>
+    </div>
+</nav>
+
+
+<section class="hero">
+    <div class="hero-bg-logo-wrap">
+        <img src="https://cdn.prod.website-files.com/66a9f893853be9d0700394f6/66aa00e97b0260b5c219685f_LiBDR_black.svg" alt="">
+    </div>
+
+    <div class="hero-inner">
+        <h1>
+            <span class="line"><span class="mask-wrap"><span class="mask-inner hero-text">Automation</span></span></span>
+            <span class="line"><span class="mask-wrap"><span class="mask-inner hero-text">that <span class="green">behaves</span></span></span></span>
+            <span class="line"><span class="mask-wrap"><span class="mask-inner hero-text">like an <span class="serif-italic">operator.</span></span></span></span>
+        </h1>
+        <p class="hero-sub mask-wrap"><span class="mask-inner hero-text">We build AI systems that qualify leads, run workflows, and ship conversion assets — without adding headcount.</span></p>
+        </div>
+</section>
+
+
+<script>
+    // ... existing GSAP register & variables ...
+
+    // 1. Initial Load Entrances (UPDATE existing initTL)
+    const initTL = gsap.timeline();
+    gsap.set('.hero-text', { yPercent: 110 });
+
+    // Add Hero BG Logo entrance to timeline
+    initTL.to('.hero-bg-logo-wrap', {
+        opacity: 0.06, // Target opacity (0.04-0.08 range)
+        scale: 1,
+        startAt: { scale: 0.95 }, // Start slightly smaller
+        duration: 1.8,
+        ease: 'power3.out'
+    }, 0); // Start at beginning of TL
+
+    initTL.to('.hero-text', {
+        yPercent: 0,
+        duration: 1.2,
+        stagger: 0.08,
+        ease: 'power3.out',
+    }, 0.1); // Slight delay after logo starts
+
+    // Subtle breathing loop for hero bg logo (Separate tween)
+    gsap.to('.hero-bg-logo-wrap img', {
+        scale: 1.05,
+        duration: 7, // 6-8s slow loop
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 1.8 // Wait for entrance to finish
+    });
+
+    // ... rest of existing scripts ...
+</script>
